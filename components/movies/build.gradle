@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+    id "io.spring.dependency-management" //version "1.0.6.RELEASE"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:$springBootVersion"
+    }
+
+}
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.springframework:spring-context"
+    compile "org.springframework:spring-tx"
+    compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api"
+    compile "org.slf4j:slf4j-api"
+}
