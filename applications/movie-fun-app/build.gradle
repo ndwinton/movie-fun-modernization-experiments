@@ -38,6 +38,8 @@ dependencies {
     compile "org.apache.geronimo.specs:geronimo-osgi-locator:1.1"
     compile "org.apache.geronimo.components:geronimo-jaspi:2.0.0"
 
+    compile project(":components:movies")
+    
     testCompile "org.springframework.boot:spring-boot-starter-test"
 }
 
