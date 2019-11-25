@@ -33,6 +33,7 @@ dependencies {
     compile "org.apache.geronimo.components:geronimo-jaspi:2.0.0"
 
     compile project(":components:movies")
+    compile project(":components:albums")
     
     testCompile "org.springframework.boot:spring-boot-starter-test"
 }
