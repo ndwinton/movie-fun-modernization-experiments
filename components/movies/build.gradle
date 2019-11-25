@@ -1,17 +1,4 @@
-plugins {
-    id 'java'
-    id "io.spring.dependency-management" //version "1.0.6.RELEASE"
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.boot:spring-boot-dependencies:$springBootVersion"
-    }
-
-}
-repositories {
-    mavenCentral()
-}
+apply from: '../../java.gradle'
 
 dependencies {
     compile "org.springframework:spring-context"

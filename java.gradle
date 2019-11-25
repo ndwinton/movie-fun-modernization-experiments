@@ -1,0 +1,13 @@
+apply plugin: 'java'
+apply plugin: 'io.spring.dependency-management'
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:$springBootVersion"
+    }
+
+}
+
+repositories {
+    mavenCentral()
+}
