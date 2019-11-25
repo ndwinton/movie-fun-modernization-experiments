@@ -18,4 +18,5 @@ dependencies {
     compile "org.springframework:spring-tx"
     compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api"
     compile "org.slf4j:slf4j-api"
+    compile "javax.servlet:javax.servlet-api:$javaxServletVersion"
 }
