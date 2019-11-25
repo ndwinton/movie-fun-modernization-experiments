@@ -32,10 +32,16 @@ public class SmokeTest {
         assertThat(setupPage, containsString("Shanghai Knights"));
         assertThat(setupPage, containsString("I-Spy"));
         assertThat(setupPage, containsString("The Royal Tenenbaums"));
+        assertThat(setupPage, containsString("Mezzanine"));
+        assertThat(setupPage, containsString("Radiohead"));
 
         String movieFunPage = restTemplate.getForObject("/moviefun", String.class);
 
         assertThat(movieFunPage, containsString("Wedding Crashers"));
         assertThat(movieFunPage, containsString("David Dobkin"));
+
+        String albumsPage = restTemplate.getForObject("/albums", String.class);
+        assertThat(albumsPage, containsString("Mezzanine"));
+        assertThat(albumsPage, containsString("Massive Attack"));
     }
 }
