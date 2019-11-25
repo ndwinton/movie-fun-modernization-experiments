@@ -26,3 +26,14 @@ dependencies {
 
     testCompile "org.springframework.boot:spring-boot-starter-test"
 }
+
+test.environment([
+        'VCAP_SERVICES': '''{"user-provided": [{
+            "credentials": {
+                "access_key_id": "AAAAAAAAA",
+                "bucket": "moviefun",
+                "secret_access_key": "SSSSSSSSS",
+                "endpoint": "http://127.0.0.1:9000"},
+            "name": "photo-storage"
+        }]}'''
+])
