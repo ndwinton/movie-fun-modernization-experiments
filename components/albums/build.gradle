@@ -1,1 +1,14 @@
 apply from: '../../java.gradle'
+
+dependencies {
+    compile "org.springframework:spring-context"
+    compile "org.springframework:spring-tx"
+    compile "org.springframework:spring-web"
+    compile "org.springframework:spring-jdbc"
+    compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api"
+    compile "org.slf4j:slf4j-api"
+    compile "com.fasterxml.jackson.core:jackson-databind"
+    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-csv"
+    
+    testCompile 'junit:junit'
+}
