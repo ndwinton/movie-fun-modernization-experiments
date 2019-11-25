@@ -10,5 +10,6 @@ dependencies {
     compile "com.fasterxml.jackson.core:jackson-databind"
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-csv"
     
+    compile project(":components:blobstore")
     testCompile 'junit:junit'
 }
