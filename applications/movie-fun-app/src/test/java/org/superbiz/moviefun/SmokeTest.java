@@ -1,10 +1,12 @@
 package org.superbiz.moviefun;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -17,6 +19,14 @@ public class SmokeTest {
 
     @Autowired
     TestRestTemplate restTemplate;
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+
+    @Before
+    public  void setup() {
+        jdbcTemplate.execute("TRUNCATE movie");
+        jdbcTemplate.execute("TRUNCATE album");
+    }
 
     @Test
     public void smokeTest() {
