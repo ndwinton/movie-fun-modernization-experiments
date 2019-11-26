@@ -20,3 +20,6 @@ logging.level:
   root: INFO
   org.superbiz.moviefun: DEBUG
 
+# Set to 's3' (default) for AWS S3 store, or 'file' for local file store
+blob.store: file
+

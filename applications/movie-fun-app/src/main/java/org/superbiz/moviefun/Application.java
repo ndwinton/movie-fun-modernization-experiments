@@ -6,9 +6,11 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.superbiz.moviefun.blobstore.BlobStore;
+import org.superbiz.moviefun.blobstore.FileStore;
 import org.superbiz.moviefun.blobstore.S3Store;
 import org.superbiz.moviefun.movies.MovieServlet;
 
@@ -30,7 +32,14 @@ public class Application {
     }
 
     @Bean
-    public BlobStore blobStore(
+    @ConditionalOnProperty(name = "blob.store", havingValue = "file")
+    public BlobStore fileBlobStore() {
+        return new FileStore();
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = "blob.store", havingValue = "s3", matchIfMissing = true)
+    public BlobStore s3BlobStore(
         ServiceCredentials serviceCredentials,
         @Value("${vcap.services.photo-storage.credentials.endpoint:#{null}}") String endpoint
     ) {
