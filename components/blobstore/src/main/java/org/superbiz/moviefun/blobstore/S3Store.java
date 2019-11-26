@@ -5,7 +5,6 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
-import org.apache.tika.Tika;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -15,7 +14,6 @@ public class S3Store implements BlobStore {
 
     private final AmazonS3 s3;
     private final String bucketName;
-    private final Tika tika = new Tika();
 
     public S3Store(AmazonS3 s3, String bucketName) {
         this.s3 = s3;
@@ -25,7 +23,9 @@ public class S3Store implements BlobStore {
 
     @Override
     public void put(Blob blob) throws IOException {
-        s3.putObject(bucketName, blob.name, blob.inputStream, new ObjectMetadata());
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType(blob.contentType);
+        s3.putObject(bucketName, blob.name, blob.inputStream, metadata);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class S3Store implements BlobStore {
         return Optional.of(new Blob(
             name,
             new ByteArrayInputStream(bytes),
-            tika.detect(bytes)
+            s3Object.getObjectMetadata().getContentType()
         ));
     }
 }
