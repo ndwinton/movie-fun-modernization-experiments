@@ -1,0 +1,11 @@
+apply from: '../../java.gradle'
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+    }
+}
+dependencies {
+    compile "org.springframework:spring-beans"
+    compile "org.springframework.cloud:spring-cloud-starter-openfeign"
+}

@@ -1,6 +1,7 @@
 buildscript {
     ext {
         springBootVersion = "2.0.6.RELEASE"
+        springCloudVersion = "Finchley.SR4"
         slf4jVersion = '1.7.25'
         javaxServletVersion = '4.0.1'
     }
