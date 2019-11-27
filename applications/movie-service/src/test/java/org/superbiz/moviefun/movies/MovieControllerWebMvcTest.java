@@ -73,7 +73,7 @@ public class MovieControllerWebMvcTest {
     }
 
     @Test
-    public void list_with_no_search_term_finds_all() throws Exception {
+    public void paged_list_with_no_search_term_finds_all() throws Exception {
         List<Movie> expectedList = Lists.newArrayList(MOVIE_1, MOVIE_2);
         doReturn(expectedList).when(repository).findAll(100, 2);
 
@@ -84,11 +84,22 @@ public class MovieControllerWebMvcTest {
     }
 
     @Test
-    public void list_with_search_term_finds_subset() throws Exception {
+    public void paged_list_with_search_term_finds_subset() throws Exception {
         List<Movie> expectedList = Lists.newArrayList(MOVIE_1, MOVIE_2);
         doReturn(expectedList).when(repository).findRange("foo", "bar", 100, 2);
 
         MvcResult result = mockMvc.perform(get("/movies?firstResult=100&maxResults=2&field=foo&searchTerm=bar"))
+                .andExpect(status().isOk()).andReturn();
+        String content = result.getResponse().getContentAsString();
+        assertThat(content, is(objectMapper.writeValueAsString(expectedList)));
+    }
+
+    @Test
+    public void unpaged_list_retrieves_all() throws Exception {
+        List<Movie> expectedList = Lists.newArrayList(MOVIE_1, MOVIE_2);
+        doReturn(expectedList).when(repository).getMovies();
+
+        MvcResult result = mockMvc.perform(get("/movies"))
                 .andExpect(status().isOk()).andReturn();
         String content = result.getResponse().getContentAsString();
         assertThat(content, is(objectMapper.writeValueAsString(expectedList)));

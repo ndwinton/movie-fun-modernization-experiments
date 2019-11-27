@@ -61,7 +61,7 @@ public class MovieControllerTest {
     }
 
     @Test
-    public void list_with_missing_search_parameters_finds_all() {
+    public void paged_list_with_missing_search_parameters_finds_all() {
         List<Movie> resultList = Lists.newArrayList(MOVIE_1, MOVIE_2);
         doReturn(resultList).when(repository).findAll(100, 2);
 
@@ -73,7 +73,7 @@ public class MovieControllerTest {
     }
 
     @Test
-    public void list_with_search_parameters_finds_subset() {
+    public void paged_list_with_search_parameters_finds_subset() {
         List<Movie> resultList = Lists.newArrayList(MOVIE_1, MOVIE_2);
         doReturn(resultList).when(repository).findRange("field", "searchTerm", 100, 2);
 
@@ -82,5 +82,18 @@ public class MovieControllerTest {
         assertThat(response.getBody().size(), is(2));
         assertThat(response.getBody(), containsInAnyOrder(resultList.toArray()));
         verify(repository).findRange("field", "searchTerm", 100, 2);
+    }
+
+    @Test
+    public void unpaged_list_finds_all() {
+        List<Movie> resultList = Lists.newArrayList(MOVIE_1, MOVIE_2);
+        doReturn(resultList).when(repository).getMovies();
+
+        ResponseEntity<List<Movie>> response = controller.find(null, null, null, null);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().size(), is(2));
+        assertThat(response.getBody(), containsInAnyOrder(resultList.toArray()));
+        verify(repository).getMovies();
+
     }
 }

@@ -39,13 +39,18 @@ public class MovieController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Movie>> find(@RequestParam Integer firstResult,
-                                            @RequestParam Integer maxResults,
+    public ResponseEntity<List<Movie>> find(@RequestParam(required = false) Integer firstResult,
+                                            @RequestParam(required = false) Integer maxResults,
                                             @RequestParam(required = false) String field,
                                             @RequestParam(required = false) String searchTerm) {
-        if (field != null && searchTerm != null) {
-            return new ResponseEntity<List<Movie>>(repository.findRange(field, searchTerm, firstResult, maxResults), HttpStatus.OK);
+        List<Movie> result = null;
+        if (firstResult == null && maxResults == null) {
+            result = repository.getMovies();
+        } else if (field != null && searchTerm != null) {
+            result = repository.findRange(field, searchTerm, firstResult, maxResults);
+        } else {
+            result = repository.findAll(firstResult, maxResults);
         }
-        return new ResponseEntity<List<Movie>>(repository.findAll(firstResult, maxResults), HttpStatus.OK);
+        return new ResponseEntity<List<Movie>>(result, HttpStatus.OK);
     }
 }
