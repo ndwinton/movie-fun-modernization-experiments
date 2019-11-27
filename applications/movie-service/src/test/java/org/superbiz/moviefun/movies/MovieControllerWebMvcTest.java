@@ -28,7 +28,7 @@ public class MovieControllerWebMvcTest {
     MockMvc mockMvc;
 
     @MockBean
-    MoviesBean repository;
+    MovieRepository repository;
 
     @Autowired
     ObjectMapper objectMapper;

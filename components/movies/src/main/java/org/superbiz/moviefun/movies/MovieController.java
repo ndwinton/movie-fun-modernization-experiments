@@ -9,9 +9,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/movies")
 public class MovieController {
-    private MoviesBean repository;
+    private MovieRepository repository;
 
-    public MovieController(MoviesBean repository) {
+    public MovieController(MovieRepository repository) {
 
         this.repository = repository;
     }

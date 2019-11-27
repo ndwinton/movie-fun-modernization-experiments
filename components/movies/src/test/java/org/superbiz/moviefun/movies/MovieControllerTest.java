@@ -1,7 +1,6 @@
 package org.superbiz.moviefun.movies;
 
 import org.assertj.core.util.Lists;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,7 @@ import static org.mockito.Mockito.*;
 
 public class MovieControllerTest {
 
-    MoviesBean repository = mock(MoviesBean.class);
+    MovieRepository repository = mock(MovieRepository.class);
     MovieController controller = new MovieController(repository);
 
     private static final Movie MOVIE_1 = new Movie("Title 1", "Director 1", "Genre 1", 1, 2001);
