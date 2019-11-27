@@ -2,7 +2,9 @@ apply from: '../../java.gradle'
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
-    
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    compile "mysql:mysql-connector-java:8.0.18"
+
     implementation project(":components:movies")
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
