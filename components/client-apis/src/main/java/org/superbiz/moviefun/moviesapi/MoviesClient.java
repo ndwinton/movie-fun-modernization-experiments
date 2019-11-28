@@ -1,38 +1,35 @@
 package org.superbiz.moviefun.moviesapi;
 
-import feign.Headers;
-import feign.Param;
-import feign.RequestLine;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @FeignClient(url = "${movies.url}", name = "MoviesClient")
 public interface MoviesClient {
 
-    @RequestLine("POST /")
-    @Headers("Content-type: application/json")
-    void addMovie(MovieInfo movie);
+    @PostMapping("/")
+    void addMovie(@RequestBody MovieInfo movie);
 
-    @RequestLine("DELETE /{id}")
-    void deleteMovieId(@Param("id") Long id);
+    @DeleteMapping("/{id}")
+    void deleteMovieId(@PathVariable("id") Long id);
 
-    @RequestLine("GET /?firstResult={firstResult}&maxResults={maxResults}")
-    List<MovieInfo> findAll(@Param("firstResult") int firstResult, @Param("maxResults") int maxResults);
-
-    @RequestLine("GET /count")
+    @GetMapping("/count")
     int countAll();
 
-    @RequestLine("GET /count?field={field}&searchTerm={searchTerm}")
-    int count(@Param("field") String field, @Param("searchTerm") String searchTerm);
+    @GetMapping("/count")
+    int count(@RequestParam("field") String field, @RequestParam("searchTerm") String searchTerm);
 
-    @RequestLine("GET /?field={field}&searchTerm={searchTerm}&firstResult={firstResult}&maxResults={maxResults}")
-    List<MovieInfo> findRange(@Param("field") String field,
-                              @Param("searchTerm") String searchTerm,
-                              @Param("firstResult") int firstResult,
-                              @Param("maxResults") int maxResults);
+    @GetMapping("/")
+    List<MovieInfo> findAll(@RequestParam("firstResult") int firstResult, @RequestParam("maxResults") int maxResults);
 
-    @RequestLine("GET /")
+    @GetMapping("/")
+    List<MovieInfo> findRange(@RequestParam("field") String field,
+                              @RequestParam("searchTerm") String searchTerm,
+                              @RequestParam("firstResult") int firstResult,
+                              @RequestParam("maxResults") int maxResults);
+
+    @GetMapping("/")
     List<MovieInfo> getMovies();
 
 }
