@@ -17,7 +17,7 @@ public class MovieController {
     }
 
     @PostMapping
-    public ResponseEntity addMovie(Movie movie) {
+    public ResponseEntity addMovie(@RequestBody Movie movie) {
         repository.addMovie(movie);
         ResponseEntity responseEntity = new ResponseEntity(HttpStatus.CREATED);
         return responseEntity;
