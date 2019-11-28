@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.superbiz.moviefun.blobstore.BlobStore;
 import org.superbiz.moviefun.blobstore.FileStore;
@@ -15,6 +16,7 @@ import org.superbiz.moviefun.blobstore.S3Store;
 import org.superbiz.moviefun.movies.MovieServlet;
 
 @SpringBootApplication
+@EnableFeignClients
 public class Application {
 
     public static void main(String... args) {

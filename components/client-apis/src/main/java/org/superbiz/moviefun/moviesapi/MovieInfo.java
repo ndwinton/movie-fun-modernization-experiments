@@ -1,12 +1,12 @@
 package org.superbiz.moviefun.moviesapi;
 
 public class MovieInfo {
-    private final long id;
-    private final String director;
-    private final String title;
-    private final String genre;
-    private final int rating;
-    private final int year;
+    private long id;
+    private String director;
+    private String title;
+    private String genre;
+    private int rating;
+    private int year;
 
     public MovieInfo(long id, String director, String title, String genre, int rating, int year) {
         this.id = id;
@@ -17,7 +17,7 @@ public class MovieInfo {
         this.year = year;
     }
 
-    public MovieInfo(String director, String title, String genre,  int rating, int year) {
+    public MovieInfo(String title, String director, String genre,  int rating, int year) {
         this.id = 0;
         this.director = director;
         this.title = title;

@@ -1,0 +1,13 @@
+apply from: '../../java.gradle'
+
+dependencies {
+    compile "org.springframework:spring-context"
+//    compile "org.springframework:spring-tx"
+//    compile "org.springframework:spring-web"
+//    compile "org.springframework:spring-webmvc"
+//    compile "org.slf4j:slf4j-api"
+    compile project(":components:client-apis")
+    compile "javax.servlet:javax.servlet-api:$javaxServletVersion"
+
+    testCompile "org.springframework.boot:spring-boot-starter-test"
+}

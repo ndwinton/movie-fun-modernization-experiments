@@ -8,3 +8,4 @@ include "components:albums"
 include "components:blobstore"
 
 include "components:client-apis"
+include "components:movie-fun-ui"

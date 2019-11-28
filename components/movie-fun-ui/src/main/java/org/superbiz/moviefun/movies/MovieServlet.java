@@ -18,6 +18,8 @@ package org.superbiz.moviefun.movies;
 
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import org.superbiz.moviefun.moviesapi.MovieInfo;
+import org.superbiz.moviefun.moviesapi.MoviesClient;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -36,9 +38,9 @@ public class MovieServlet extends HttpServlet {
 
     public static int PAGE_SIZE = 5;
 
-    private MovieRepository movieRepository;
+    private MoviesClient movieRepository;
 
-    public MovieServlet(MovieRepository movieRepository) {
+    public MovieServlet(MoviesClient movieRepository) {
         this.movieRepository = movieRepository;
     }
 
@@ -63,7 +65,7 @@ public class MovieServlet extends HttpServlet {
             int rating = Integer.parseInt(request.getParameter("rating"));
             int year = Integer.parseInt(request.getParameter("year"));
 
-            Movie movie = new Movie(title, director, genre, rating, year);
+            MovieInfo movie = new MovieInfo(title, director, genre, rating, year);
 
             movieRepository.addMovie(movie);
             response.sendRedirect("moviefun");
@@ -114,7 +116,7 @@ public class MovieServlet extends HttpServlet {
             }
 
             int start = (page - 1) * PAGE_SIZE;
-            List<Movie> range;
+            List<MovieInfo> range;
 
             if (StringUtils.isEmpty(key) || StringUtils.isEmpty(field)) {
                 range = movieRepository.findAll(start, PAGE_SIZE);
