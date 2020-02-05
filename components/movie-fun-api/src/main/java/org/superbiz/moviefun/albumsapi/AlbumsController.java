@@ -1,11 +1,10 @@
 package org.superbiz.moviefun.albumsapi;
 
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import org.apache.tika.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -63,9 +62,21 @@ public class AlbumsController {
 
     @GetMapping("/{albumId}/cover")
     public HttpEntity<byte[]> getCover(@PathVariable long albumId) throws IOException, URISyntaxException {
+        logger.info("Reading blob for image " + albumId);
         Optional<Blob> maybeCoverBlob = blobStore.get(getCoverBlobName(albumId));
-        Blob coverBlob = maybeCoverBlob.orElseGet(this::buildDefaultCoverBlob);
+        Blob coverBlob =  maybeCoverBlob.orElseGet(this::buildDefaultCoverBlob);
 
+        return buildHttpEntityForBlob(coverBlob);
+    }
+
+    @Bulkhead(name = "thumbnail", fallbackMethod = "getThumbnailFallback")
+    @GetMapping("/{albumId}/thumbnail")
+    public HttpEntity<byte[]> getThumbnail(@PathVariable long albumId) throws IOException, URISyntaxException, InterruptedException {
+        Thread.sleep(100);
+        return getCover(albumId);
+    }
+
+    private HttpEntity<byte[]> buildHttpEntityForBlob(Blob coverBlob) throws IOException {
         byte[] imageBytes = IOUtils.toByteArray(coverBlob.inputStream);
 
         HttpHeaders headers = new HttpHeaders();
@@ -75,6 +86,15 @@ public class AlbumsController {
         return new HttpEntity<>(imageBytes, headers);
     }
 
+    private HttpEntity<byte[]> getThumbnailFallback(long albumId, Throwable throwable) throws IOException {
+        logger.warn("Bulkhead falling back to default cover image - reason: " + throwable);
+        //return buildHttpEntityForBlob(buildDefaultThumbnailBlob());
+        //ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Location", "/default-thumbnail.jpg");
+        ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(headers, HttpStatus.FOUND);
+        return responseEntity;
+    }
 
     private void tryToUploadCover(@PathVariable Long albumId, @RequestParam("file") MultipartFile uploadedFile) throws IOException {
         Blob coverBlob = new Blob(
@@ -89,6 +109,13 @@ public class AlbumsController {
     private Blob buildDefaultCoverBlob() {
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream input = classLoader.getResourceAsStream("default-cover.jpg");
+
+        return new Blob("default-cover", input, MediaType.IMAGE_JPEG_VALUE);
+    }
+
+    private Blob buildDefaultThumbnailBlob() {
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream input = classLoader.getResourceAsStream("default-thumbnail.jpg");
 
         return new Blob("default-cover", input, MediaType.IMAGE_JPEG_VALUE);
     }
